@@ -40,7 +40,6 @@ let CommentForm = React.createClass({
   },
 
   handleAuthorChange: function(e) {
-    console.info('author event', e);
     this.setState({author: e.target.value});
   },
 
@@ -97,15 +96,21 @@ let CommentBox = React.createClass({
   },
 
   handleCommentSubmit: function(comment) {
+    let comments = this.state.data;
+    comment.id = Date.now();
+    let newComments = comments.concat([comment]);
+    this.setState({data: newComments});
+
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       type: 'POST',
       data: comment,
       success: function(data) {
-        this.setState({data: data});
+        this.setState({data});
       }.bind(this),
       error: function(xhr, status, err) {
+        this.setState({data: comments});
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
