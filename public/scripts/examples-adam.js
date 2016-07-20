@@ -28,7 +28,9 @@ let CommentList = React.createClass({
     });
     return (
       <div className="commentList">
-        {commentNodes}
+        {commentNodes.sort(function(a, b) {
+          return b.key - a.key;
+        })}
       </div>
     );
   }
@@ -129,8 +131,8 @@ let CommentBox = React.createClass({
     return (
       <div className="commentBox">
         <h1>Comments</h1>
-        <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+        <CommentList data={this.state.data} />
       </div>
     );
   }
